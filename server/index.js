@@ -16,7 +16,7 @@ app.get("/api/helloapi", (req, res) => {
   res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
 });
 
-app.get("/api/oauth/twitter", async function(_req, res) {
+app.get("/api/oauth/twitter/request_token", async function(_req, res) {
   try {
     const response = await twitter.request_token();
     res.json({

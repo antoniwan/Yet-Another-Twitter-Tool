@@ -1,30 +1,16 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
-import axios from "axios";
+import oauth from "./libs/oauth";
 
 function Connector() {
   const [connectorIsLoading, setConnectionIsLoading] = useState(false);
 
-  function handleClick() {
+  async function handleClick() {
     console.log("click!");
     setConnectionIsLoading(true);
-    axios({
-      method: "get",
-      url: "/api/oauth/twitter"
-    });
-    axios
-      .get("/api/oauth/twitter")
-      .then(function(response) {
-        console.log(response);
-        if (response.status === 200) {
-        }
-      })
-      .catch(function(error) {
-        console.error(error);
-      })
-      .finally(function() {
-        // always executed
-      });
+    const token_object = await oauth.request_token();
+    console.log(token_object);
+    setConnectionIsLoading(false);
   }
 
   return (
@@ -33,7 +19,7 @@ function Connector() {
       onClick={handleClick}
       disabled={connectorIsLoading}
     >
-      {connectorIsLoading ? "Loading..." : "Connect with Twitter"}
+      {connectorIsLoading ? "Loading..." : "Connect your Twitter account!"}
     </Button>
   );
 }
