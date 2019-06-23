@@ -3,7 +3,7 @@ const util = require("util");
 const qs = require("querystring");
 const post = util.promisify(request.post);
 
-const TWITTER_OAUTH_CALLBACK_URL = process.env.TWITTER_API_URL;
+const TWITTER_OAUTH_CALLBACK_URL = process.env.TWITTER_CALLBACK_URL;
 const TWITTER_OAUTH_CONSUMER_KEY = process.env.TWITTER_CONSUMER_API_KEY;
 const TWITTER_OAUTH_CONSUMER_SECRET =
   process.env.TWITTER_CONSUMER_API_SECRET_KEY;
