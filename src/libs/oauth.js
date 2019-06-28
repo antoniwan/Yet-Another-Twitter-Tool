@@ -1,3 +1,5 @@
+import { createContext } from "react";
+
 const oauth = (function() {
   async function oauth_twitter_request_token() {
     let response = await fetch("/api/oauth/twitter/request_token");
@@ -12,4 +14,7 @@ const oauth = (function() {
   };
 })();
 
+const OauthContext = createContext(null);
+
 export default oauth;
+export { OauthContext };

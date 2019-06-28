@@ -1,32 +1,22 @@
-import React, { useState } from "react";
-import Button from "react-bootstrap/Button";
-import oauth from "./libs/oauth";
+import React, { useReducer } from "react";
+import { OauthContext } from "./libs/oauth";
+import Connector from "./components/Connector";
+import authReducer from "./reducers/authreducer";
 
-function Connector() {
-  const [connectorIsLoading, setConnectionIsLoading] = useState(false);
-
-  async function handleClick() {
-    console.log("click!");
-    setConnectionIsLoading(true);
-    const token_object = await oauth.request_token();
-    console.log(token_object);
-    setConnectionIsLoading(false);
-  }
-
-  return (
-    <Button
-      variant="primary"
-      onClick={handleClick}
-      disabled={connectorIsLoading}
-    >
-      {connectorIsLoading ? "Loading..." : "Connect your Twitter account!"}
-    </Button>
-  );
-}
 function App() {
+  const [auth, dispatchAuth] = useReducer(authReducer, {
+    authenticated: null,
+    loading: false
+  });
+  const { loading, authenticated } = auth;
+
+  console.log("auth", auth);
+
   return (
     <div className="app">
-      <Connector />
+      <OauthContext.Provider value={dispatchAuth}>
+        {!authenticated && <Connector auth={auth} />}
+      </OauthContext.Provider>
     </div>
   );
 }
