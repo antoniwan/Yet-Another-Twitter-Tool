@@ -7,7 +7,8 @@ const authReducer = (state, action) => {
         ...state,
         token: action.token_info,
         authenticated: null,
-        loading: false
+        loading: false,
+        redirecting: true
       };
     case "LOG_OUT":
       return { ...state, token: null, authenticated: null, loading: false };

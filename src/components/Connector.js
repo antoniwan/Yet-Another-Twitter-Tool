@@ -4,29 +4,35 @@ import oauth, { OauthContext } from "../libs/oauth";
 
 function Connector({ auth }) {
   const dispatch = useContext(OauthContext);
-  const { loading, authenticated } = auth;
+  const { loading, redirecting, authenticated } = auth;
 
-  async function handleClick() {
+  const handleClick = async () => {
     dispatch({ type: "REQUESTING_TOKEN" });
     const token_object = await oauth.request_token();
-    dispatch({ type: "TOKEN_ACCEPTED", auth_info: token_object });
+    await dispatch({ type: "TOKEN_ACCEPTED", token_info: token_object });
+    window.location = `https://api.twitter.com/oauth/authorize?oauth_token=${
+      token_object.oauth_token
+    }`;
+  };
+
+  const handleLogout = async () => {
+    dispatch({ type: "LOG_OUT" });
+  };
+
+  let cta_string = "Connect your Twitter account!";
+  if (redirecting) {
+    cta_string = "Redirecting...";
   }
 
-  async function handleLogout() {
-    dispatch({ type: "LOG_OUT" });
+  if (loading) {
+    cta_string = "Loading...";
   }
 
   return (
     <div>
-      {!authenticated ? (
-        <Button variant="primary" onClick={handleClick} disabled={loading}>
-          {loading ? "Loading..." : "Connect your Twitter account!"}
-        </Button>
-      ) : (
-        <Button variant="secondary" onClick={handleLogout} disabled={loading}>
-          {loading ? "Loading..." : "Log Out"}
-        </Button>
-      )}
+      <Button variant="primary" onClick={handleClick} disabled={loading}>
+        {cta_string}
+      </Button>
     </div>
   );
 }
