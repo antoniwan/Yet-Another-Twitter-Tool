@@ -38,8 +38,7 @@ const twitter = (function() {
       url: new URL(
         `${TWITTER_API_URL}/oauth/access_token?oauth_verifier=${oauth_verifier}&oauth_token=${oauth_token}`
       ),
-      oauth: oAuthConfig,
-      form: { oauth_verifier: oauth_verifier, oauth_token: oauth_token }
+      oauth: oAuthConfig
     });
     console.log(request);
     return qs.parse(request.body);
