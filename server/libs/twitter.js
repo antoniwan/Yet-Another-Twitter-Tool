@@ -39,8 +39,6 @@ const twitter = (function() {
       ),
       oauth: oAuthConfig
     });
-    console.log(request);
-    return qs.parse(request.body);
 
     if (request.statusCode === 200) {
       return qs.parse(request.body);
