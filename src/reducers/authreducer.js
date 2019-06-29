@@ -16,15 +16,20 @@ const authReducer = (state, action) => {
         loading: true
       };
     case "SAVE_ACCESS_TOKEN":
+      const { screen_name, user_id } = action.token_info;
       return {
         ...state,
         access_token: action.token_info,
         loading: false,
         redirecting: false,
-        authenticated: true
+        authenticated: true,
+        twitter: {
+          screen_name,
+          user_id
+        }
       };
     case "LOG_OUT":
-      return { ...state, token: null, authenticated: null, loading: false };
+      return { authenticated: null, loading: false };
     default:
       throw new Error();
   }
