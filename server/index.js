@@ -29,6 +29,20 @@ app.get("/api/oauth/twitter/request_token", async function(_req, res) {
   }
 });
 
+app.get("/api/oauth/twitter/convert_token", async function(req, res) {
+  try {
+    const response = await twitter.convert_token(
+      req.query.oauth_token,
+      req.query.oauth_verifier
+    );
+    res.json({
+      response
+    });
+  } catch (error) {
+    res.status(500).json({ Error: error.message });
+  }
+});
+
 app.listen(3001, () =>
   console.log(`Express server is running on localhost:3001`)
 );

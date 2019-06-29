@@ -8,9 +8,6 @@ const TWITTER_OAUTH_CONSUMER_KEY = process.env.TWITTER_CONSUMER_API_KEY;
 const TWITTER_OAUTH_CONSUMER_SECRET =
   process.env.TWITTER_CONSUMER_API_SECRET_KEY;
 const TWITTER_API_URL = "https://api.twitter.com";
-const TWITTER_API_REQUEST_TOKEN_URL = new URL(
-  `${TWITTER_API_URL}/oauth/request_token`
-);
 
 const twitter = (function() {
   async function request_token() {
@@ -20,7 +17,7 @@ const twitter = (function() {
       consumer_secret: TWITTER_OAUTH_CONSUMER_SECRET
     };
     const request = await post({
-      url: TWITTER_API_REQUEST_TOKEN_URL,
+      url: new URL(`${TWITTER_API_URL}/oauth/request_token`),
       oauth: oAuthConfig
     });
     if (request.statusCode === 200) {
@@ -29,8 +26,34 @@ const twitter = (function() {
       throw new Error("Unable to get oAuth Request Token");
     }
   }
+
+  async function convert_token(oauth_token, oauth_verifier) {
+    const oAuthConfig = {
+      consumer_key: TWITTER_OAUTH_CONSUMER_KEY,
+      consumer_secret: TWITTER_OAUTH_CONSUMER_SECRET,
+      token: oauth_token,
+      oauth_verified: oauth_verifier
+    };
+    const request = await post({
+      url: new URL(
+        `${TWITTER_API_URL}/oauth/access_token?oauth_verifier=${oauth_verifier}&oauth_token=${oauth_token}`
+      ),
+      oauth: oAuthConfig,
+      form: { oauth_verifier: oauth_verifier, oauth_token: oauth_token }
+    });
+    console.log(request);
+    return qs.parse(request.body);
+
+    if (request.statusCode === 200) {
+      return qs.parse(request.body);
+    } else {
+      throw new Error("Unable to get oAuth Access Token");
+    }
+  }
+
   return {
-    request_token
+    request_token,
+    convert_token
   };
 })();
 

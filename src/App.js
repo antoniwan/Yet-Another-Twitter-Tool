@@ -14,7 +14,7 @@ function App() {
       loading: false
     }
   );
-  const { loading, authenticated } = auth;
+  const { authenticated } = auth;
 
   console.log("auth", auth);
 

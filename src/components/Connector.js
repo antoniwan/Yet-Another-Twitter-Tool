@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import oauth, { OauthContext } from "../libs/oauth";
 
 function Connector({ auth }) {
   const dispatch = useContext(OauthContext);
-  const { loading, redirecting, authenticated } = auth;
+  const { loading, redirecting } = auth;
 
   const handleClick = async () => {
     dispatch({ type: "REQUESTING_TOKEN" });
@@ -15,10 +15,6 @@ function Connector({ auth }) {
     }`;
   };
 
-  const handleLogout = async () => {
-    dispatch({ type: "LOG_OUT" });
-  };
-
   let cta_string = "Connect your Twitter account!";
   if (redirecting) {
     cta_string = "Redirecting...";
@@ -27,6 +23,10 @@ function Connector({ auth }) {
   if (loading) {
     cta_string = "Loading...";
   }
+
+  useEffect(() => {
+    console.log("Connected loaded...");
+  });
 
   return (
     <div>

@@ -5,10 +5,23 @@ const authReducer = (state, action) => {
     case "TOKEN_ACCEPTED":
       return {
         ...state,
-        token: action.token_info,
+        request_token: action.token_info,
         authenticated: null,
         loading: false,
         redirecting: true
+      };
+    case "CONVERTING_TOKEN":
+      return {
+        ...state,
+        loading: true
+      };
+    case "SAVE_ACCESS_TOKEN":
+      return {
+        ...state,
+        access_token: action.token_info,
+        loading: false,
+        redirecting: false,
+        authenticated: true
       };
     case "LOG_OUT":
       return { ...state, token: null, authenticated: null, loading: false };

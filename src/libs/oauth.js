@@ -9,8 +9,19 @@ const oauth = (function() {
     return false;
   }
 
+  async function oauth_twitter_convert_token(oauth_token, oauth_verifier) {
+    let response = await fetch(
+      `/api/oauth/twitter/convert_token?oauth_token=${oauth_token}&oauth_verifier=${oauth_verifier}`
+    );
+    if (response.ok) {
+      return response.json();
+    }
+    return false;
+  }
+
   return {
-    request_token: oauth_twitter_request_token
+    request_token: oauth_twitter_request_token,
+    convert_token: oauth_twitter_convert_token
   };
 })();
 
