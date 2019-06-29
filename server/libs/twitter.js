@@ -31,8 +31,7 @@ const twitter = (function() {
     const oAuthConfig = {
       consumer_key: TWITTER_OAUTH_CONSUMER_KEY,
       consumer_secret: TWITTER_OAUTH_CONSUMER_SECRET,
-      token: oauth_token,
-      oauth_verified: oauth_verifier
+      token: oauth_token
     };
     const request = await post({
       url: new URL(
