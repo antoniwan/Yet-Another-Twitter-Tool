@@ -36,7 +36,7 @@ const twitter = (function() {
     };
     const request = await post({
       url: new URL(
-        `${TWITTER_API_URL}/oauth/access_token?oauth_verifier=${oauth_verifier}&oauth_token=${oauth_token}`
+        `${TWITTER_API_URL}/oauth/access_token?oauth_verifier=${oauth_verifier}`
       ),
       oauth: oAuthConfig
     });
