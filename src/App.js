@@ -1,6 +1,7 @@
 import React, { useReducer, useEffect } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
 import Home from "./containers/Home";
+import Dashboard from "./containers/Dashboard";
 import ValidateUser from "./containers/ValidateUser";
 import { OauthContext } from "./libs/oauth";
 import Connector from "./components/Connector";
@@ -16,8 +17,6 @@ function App() {
   );
   const { authenticated } = auth;
 
-  console.log("auth", auth);
-
   useEffect(() => {
     localStorage.setItem("authState", JSON.stringify(auth));
   });
@@ -27,8 +26,15 @@ function App() {
         {!authenticated && <Connector auth={auth} />}
 
         <Router>
-          <Route path="/" exact component={Home} />
-          <Route path="/oauth/callback/twitter" component={ValidateUser} />
+          {!authenticated && (
+            <Route path="/oauth/callback/twitter" component={ValidateUser} />
+          )}
+          {authenticated && <Redirect to="/dashboard" />}
+          <Route
+            exact
+            path="/dashboard"
+            render={props => <Dashboard {...props} authState={auth} />}
+          />
         </Router>
       </OauthContext.Provider>
     </div>

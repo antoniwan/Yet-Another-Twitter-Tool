@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import oauth, { OauthContext } from "../libs/oauth";
 
 export default function ValidateUser() {
@@ -22,5 +22,6 @@ export default function ValidateUser() {
 
     convertToken();
   }, []);
-  return <div>validate user!</div>;
+
+  return true;
 }

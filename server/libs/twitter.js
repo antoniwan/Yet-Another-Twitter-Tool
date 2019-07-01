@@ -2,6 +2,7 @@ const request = require("request");
 const util = require("util");
 const qs = require("querystring");
 const post = util.promisify(request.post);
+const get = util.promisify(request.get);
 
 const TWITTER_OAUTH_CALLBACK_URL = process.env.TWITTER_CALLBACK_URL;
 const TWITTER_OAUTH_CONSUMER_KEY = process.env.TWITTER_CONSUMER_API_KEY;
@@ -47,9 +48,29 @@ const twitter = (function() {
     }
   }
 
+  async function get_profile(oauth_token, screen_name) {
+    const request = await get({
+      url: new URL(
+        `${TWITTER_API_URL}/1.1/users/show.json?screen_name=${screen_name}`
+      ),
+      headers: {
+        authorization: `Bearer ${oauth_token}`
+      }
+    });
+
+    console.log(request);
+
+    if (request.statusCode === 200) {
+      return qs.parse(request.body);
+    } else {
+      throw new Error("Unable to get Twitter Profile");
+    }
+  }
+
   return {
     request_token,
-    convert_token
+    convert_token,
+    get_profile
   };
 })();
 
